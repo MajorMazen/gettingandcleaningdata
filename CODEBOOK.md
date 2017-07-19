@@ -32,9 +32,9 @@ This function outputs the following files:
 | Object Name    | Class                   | Dimension  | Range (Numeric) | Usage                                                                                 |
 |----------------|-------------------------|------------|-----------------|---------------------------------------------------------------------------------------|
 | testSet        | Character data frame    |  2947 x 1  |        -        | Holds data in X_test.txt                                                              |
-|                |                         |            |                 |                                                                                       |
+                                                                                                       
 | trainSet       | Character data frame    |  7352 x 1  |        -        | Holds data in X_train.txt                                                             |
-|                                                                                                                                                                 |
+                                                                                                                                                                
 | testSubjects   | Numeric data frame      |  2947 x 1  |      1-30       | Holds data in subject_test.txt                                                        |
 
 | trainSubjects  | Numeric data frame      |  7352 x 1  |      1-30       | Holds data in subject_train.txt                                                       |
