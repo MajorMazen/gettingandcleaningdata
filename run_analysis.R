@@ -9,83 +9,55 @@
 run_analysis <- function(){
  
   #Read all data
-  #Read test and train data sets
-  testSet <- read.table("./UCI HAR Dataset/test/X_test.txt", sep= "\n", header= F, stringsAsFactors = F)
-  trainSet <- read.table("./UCI HAR Dataset/train/X_train.txt", sep= "\n", header= F, stringsAsFactors = F)
-    
-  # Read subject data and activity for test and train data sets
-  testSubjects <- read.table("./UCI HAR Dataset/test/subject_test.txt", sep= " ", header= F, colClasses = "numeric")
-  testActivity <- read.table("./UCI HAR Dataset/test/y_test.txt", sep= " ", header= F, colClasses = "numeric")
-  trainSubjects <- read.table("./UCI HAR Dataset/train/subject_train.txt", sep= " ", header= F, colClasses = "numeric")
-  trainActivity <- read.table("./UCI HAR Dataset/train/y_train.txt", sep= " ", header= F, colClasses = "numeric")  
-    
+  #Read features
+  features = read.table("UCI HAR Dataset/features.txt")
+  
   #Read activity labels 
-  activityLabels <- read.table("./UCI HAR Dataset/activity_labels.txt", sep= " ", header= F, stringsAsFactors = F)
- 
+  activityLabels <- read.table("./UCI HAR Dataset/activity_labels.txt", stringsAsFactors = F)
   
-  #--------------------------------------------------------------------------------------------
-  #Define cleaning function with mean and std descriptors for each line (measurement) of the test and train sets
-  clean <- function(x){ 
-    x= strsplit(x, " "); x= as.numeric(unlist(x)); x= x[!is.na(x)]; c(mean= mean(x), std= sd(x))} 
+  #Read test and train data sets
+  testSet <- read.table("./UCI HAR Dataset/test/X_test.txt", col.names = features[,2])
+  trainSet <- read.table("./UCI HAR Dataset/train/X_train.txt", col.names = features[,2])
+    
+  # Read subject data for test and train data sets
+  testSubjects <- read.table("./UCI HAR Dataset/test/subject_test.txt", col.names = "Subject_ID", colClasses = "numeric")
+  trainSubjects <- read.table("./UCI HAR Dataset/train/subject_train.txt", col.names = "Subject_ID", colClasses = "numeric")
   
-  #Clean test set
-  n <- nrow(testSet)
-  testDescptr <- data.frame(Mean= vector("numeric", n), Standard_Deviation= vector("numeric", n))
-  for (i in 1:n){testDescptr[i,]= clean(testSet[i,1])}
+  # Read test activity
+  testActivity <- read.table("./UCI HAR Dataset/test/y_test.txt", col.names = "Activity_Code", colClasses = "numeric")
+  # Add activity Label
+   testActivity$Activity_Label= activityLabels[testActivity[,1],2]
   
-  #Clean train set
-  n <- nrow(trainSet)
-  trainDescptr <- data.frame(Mean= vector("numeric", n), Standard_Deviation= vector("numeric", n))
-  for (i in 1:n){trainDescptr[i,]= clean(trainSet[i,1])}
-
-  #--------------------------------------------------------------------------------------------
-  #Cleanup
-  rm(testSet, trainSet)
-  
-  #--------------------------------------------------------------------------------------------
-  #Add activity labels to test and train activity code numbers
-  testActivity$Activity_Label= activityLabels[testActivity[,1],2]
+  # Read train activity
+   trainActivity <- read.table("./UCI HAR Dataset/train/y_train.txt", col.names = "Activity_Code", colClasses = "numeric")  
+  # Add activity Label
   trainActivity$Activity_Label= activityLabels[trainActivity[,1],2]
   
   #--------------------------------------------------------------------------------------------
-  #Add proper variable (column) names 
-  colnames(testSubjects) <- "Subject_ID"
-  colnames(testActivity)[1] <- "Activity_Code"
-  colnames(trainSubjects) <- "Subject_ID"
-  colnames(trainActivity)[1] <-  "Activity_Code"
-
-  #--------------------------------------------------------------------------------------------
   #Merge all train and test data
-  #function merge isn't necessary (same columns and no measurments are cross-referenced in both sets even for 
-  #repeated subject and activity)
-  testData= cbind(testActivity, testSubjects, testDescptr)
-  trainData= cbind(trainActivity, trainSubjects, trainDescptr)
+  testData= cbind(testActivity, testSubjects, testSet)
+  trainData= cbind(trainActivity, trainSubjects, trainSet)
   mergedData= rbind(trainData, testData)
   
   #--------------------------------------------------------------------------------------------
-  #Arrange datasets based on activity and subject (not necessary)
-  mergedData <- mergedData[order(mergedData$Activity_Code, mergedData$Subject_ID),]
-    
-  #--------------------------------------------------------------------------------------------
   #Cleanup
-  rm(testData, testSubjects, testActivity, testDescptr)
-  rm(trainData, trainSubjects, trainActivity, trainDescptr)
+  rm(testData, testSubjects, testActivity, testSet)
+  rm(trainData, trainSubjects, trainActivity, trainSet)
  
   #--------------------------------------------------------------------------------------------
-  #Summarize the data: compute average of the 2 variables (mean and std) 
-  #over unique combinations of subject & activity
+  #Choose features with mean and std
+  library(dplyr); library(plyr)
+  mergedData <-  mergedData[, grepl("Activity_Code|Activity_Label|Subject_ID|(mean|std)\\.", names(mergedData))]
+
   
-  # 1. Reshape data data first and define the variable as mean and std
-  library(reshape2)
-  meltData <- melt(mergedData, id= c("Subject_ID", "Activity_Code", "Activity_Label"), 
-                   measure.vars = c("Mean", "Standard_Deviation"))
-  # 2. Project distinct pairs of ids against (vs) average of the 2 variables 
-  summaryData <- dcast(meltData, Activity_Code + Activity_Label + Subject_ID ~ variable, mean)
-  colnames(summaryData)[4:5] <- c("AVG(Mean)", "AVG(Standard_Deviation)")
+  #--------------------------------------------------------------------------------------------
+  #Summarize the data: compute average of the measurements 
+  #over unique combinations of subject & activity
+  summaryData = ddply(mergedData,c("Activity_Code", "Activity_Label", "Subject_ID"),numcolwise(mean))
+  
   
   #--------------------------------------------------------------------------------------------
   #write both data tables
-  write.table(mergedData, "Combined_Ordered_Data.txt", sep = ',', row.names = FALSE)
   write.table(summaryData, "Summarized_Data.txt", sep = ',', row.names = FALSE)
   
   return(summaryData)

@@ -19,11 +19,8 @@ This Repository includes:
 ## Implementation
 The code works to:
 1. Read all relevant data files into data frames ("X_test.txt", "Y_test.txt", "X_train.txt", "Y_train.txt", "subject_test.txt", "subject_train.txt", "activity_labels.txt").
-2. Clean (through splitting by spaces) and transform to numeric the feature sets provided by the files: "X_train.txt" and "X_test.txt", excluding any possible NA's.
-3. Creating new data frame with each feature-row substituted by its mean and standard deviation for both train and test feature sets.
-4. Adding proper activity labels corresponding to the activity numbers as read by the files: "Y_train.txt" and "Y_test.txt".
-5. Properly adding variable names to all data frames before merger.
-6. Merging activity codes, labels, subjects and mean and standard deviation of features through column-binding for both train and test data separately.
-7. Merging all train and test data through row-binding, followed by ordering by the activity code and subject ID for a tidier data.
-8. Summarizing the data, through providing the average mean and standard deviation over unique pairs of activities and subjects, done by melting and casting.
-9. Writing the final output data (mergedData & summaryData) on disk.
+2. Adding proper activity labels corresponding to the activity numbers as read by the files: "Y_train.txt" and "Y_test.txt".
+3. Column binding activity codes, activity labels, subject ID to the datasets for each train and test data. 
+4. Merging all train and test data through row-binding.
+5. Summarizing the data, through providing the average mean and standard deviation features over unique pairs of activities and subjects.
+9. Writing the final output data on disk.
