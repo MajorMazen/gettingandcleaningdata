@@ -87,5 +87,7 @@ run_analysis <- function(){
   #write both data tables
   write.table(mergedData, "Combined_Ordered_Data.txt", sep = ',', row.names = FALSE)
   write.table(summaryData, "Summarized_Data.txt", sep = ',', row.names = FALSE)
+  
+  return(summaryData)
 }
 
