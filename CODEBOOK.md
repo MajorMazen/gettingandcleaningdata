@@ -34,8 +34,8 @@ This function outputs the following files:
 | trainSet | Character data frame | 7352 x 1 | - | Holds data in X_train.txt |
 | testSubjects | Numeric data frame | 2947 x 1 | 1-30 | Holds data in subject_test.txt |
 | trainSubjects | Numeric data frame | 7352 x 1 | 1-30 | Holds data in subject_train.txt |
-| testActivity | Numeric data frame | 2947 x 1 | 1-30 | 1-6 | Holds data in Y_test.txt. A character variable with the equaivalent activity is later added to it |
-| trainActivity | Numeric data frame | 7352 x 1 | 1-6 | Holds data in Y_train.txt. A character variable with the equaivalent activity is later added to it |
+| testActivity | Numeric data frame | 2947 x 1 | 1-6 | Holds data in Y_test.txt. A character variable with the equivalent activity is later added to it |
+| trainActivity | Numeric data frame | 7352 x 1 | 1-6 | Holds data in Y_train.txt. A character variable with the equivalent activity is later added to it |
 | activityLabels | Int & chr data frame | 6 x 2 | 1-6 | Holds data in activity_labels.txt |
 
 
