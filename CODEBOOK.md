@@ -20,8 +20,8 @@ The R function reads the following files as provided by the study:
 
 ## Output Files
 This function outputs the following files:
-1. Combined_Data.txt: the clean and combined data for train and test datasets as {Activity_Code, Activity_Label, Subject_ID, Mean, Standard_Deviation}
-2. Summarized_Data.txt: presents the average of the 2 variables (mean and standard deviations) for each distinct activity and subject pairs as {Activity_Code, Activity_Label, Subject_ID, AVG(Mean), AVG(Standard_Deviation)}.
+1. "Combined_Ordered_Data.txt": the clean and combined data for train and test datasets as {Activity_Code, Activity_Label, Subject_ID, Mean, Standard_Deviation}
+2. "Summarized_Data.txt": presents the average of the 2 variables (mean and standard deviations) for each distinct activity and subject pairs as {Activity_Code, Activity_Label, Subject_ID, AVG(Mean), AVG(Standard_Deviation)}.
 
 ## Variables
 ### Formal Arguments
@@ -30,29 +30,29 @@ This function outputs the following files:
 
 | Object Name | Class | Dimension | Range (Numeric) | Usage                                                  |
 |-------------|-------|-----------|-----------------|--------------------------------------------------------|
-| testSet | Character data frame | 2947 x 1 | - | Holds data in X_test.txt |
-| trainSet | Character data frame | 7352 x 1 | - | Holds data in X_train.txt |
-| testSubjects | Numeric data frame | 2947 x 1 | 1-30 | Holds data in subject_test.txt |
-| trainSubjects | Numeric data frame | 7352 x 1 | 1-30 | Holds data in subject_train.txt |
-| testActivity | Numeric data frame | 2947 x 1 | 1-6 | Holds data in Y_test.txt. A character variable with the equivalent activity is later added to it |
-| trainActivity | Numeric data frame | 7352 x 1 | 1-6 | Holds data in Y_train.txt. A character variable with the equivalent activity is later added to it |
-| activityLabels | Int & chr data frame | 6 x 2 | 1-6 | Holds data in activity_labels.txt |
+| testSet | Character data frame | 2947 x 1 | - | Holds data in "X_test.txt" |
+| trainSet | Character data frame | 7352 x 1 | - | Holds data in "X_train.txt" |
+| testSubjects | Numeric data frame | 2947 x 1 | 1-30 | Holds data in "subject_test.txt" |
+| trainSubjects | Numeric data frame | 7352 x 1 | 1-30 | Holds data in "subject_train.txt" |
+| testActivity | Numeric data frame | 2947 x 1 | 1-6 | Holds data in "Y_test.txt". A character variable with the equivalent activity label is later added to it |
+| trainActivity | Numeric data frame | 7352 x 1 | 1-6 | Holds data in "Y_train.txt". A character variable with the equivalent activity label is later added to it |
+| activityLabels | Int & chr data frame | 6 x 2 | 1-6 | Holds data in "activity_labels.txt" |
 | Clean | Function | - | - | Splits a given row of testSet or trainSet, converts it to numeric while deleting possible NA's and outputs a 2 variable vector of its mean and standard deviation |
 | testDescrptr | Numeric data frame | 2947 x 2 | [-1,1] | Holds per row descriptors (mean and standard deviation) of the test feature sets |
 | trainDescrptr | Numeric data frame | 7352 x 2 | [-1,1] | Holds per row descriptors (mean and standard deviation) of the train feature sets |
-| testData | Multivariate data frame | 2947 x 5 | - | holds column-binded testActivity, testSubjects & testDescrptr with variables of {Activity_code, Activity_label, Subject_ID, Mean, Standard_deviation} |
-| trainData | Multivariate data frame | 7352 x 5 | - | holds column-binded trainActivity, trainSubjects & trainDescrptr with variables of {Activity_code, Activity_label, Subject_ID, Mean, Standard_deviation} |
+| testData | Multivariate data frame | 2947 x 5 | - | Holds column-binded testActivity, testSubjects & testDescrptr with variables of {Activity_code, Activity_label, Subject_ID, Mean, Standard_deviation} |
+| trainData | Multivariate data frame | 7352 x 5 | - | Holds column-binded trainActivity, trainSubjects & trainDescrptr with variables of {Activity_code, Activity_label, Subject_ID, Mean, Standard_deviation} |
 | mergedData | Multivariate data frame | 10299 x 5 | - | Holds row-binded and ordered trainData & testData |
-| meltData | Multivariate data frame | 20598 x 5 | - | holds melted mergedData over the measure variable: Mean and standard deviation |
-| summaryData | Multivariate data frame | 180 x 5 | - | holds data summary, in which average of mean and standard deviation are aggregated across distinct activity and subject pairs. Variables are {Activity_Code, Activity_Label, Subject_ID, AVG(Mean), AVG(Standard_Deviation)} |
+| meltData | Multivariate data frame | 20598 x 5 | - | Holds melted mergedData over the measure variable: Mean and standard deviation |
+| summaryData | Multivariate data frame | 180 x 5 | - | Holds data summary, in which average of mean and standard deviation are aggregated across distinct activity and subject pairs. Variables are {Activity_Code, Activity_Label, Subject_ID, AVG(Mean), AVG(Standard_Deviation)} |
 
 
 ## Implementation
 The code works to:
-1. Read all relevant data files into data frames (X_test.txt, Y_test.txt, X_train.txt, Y_train.txt, subject_test.txt, subject_train.txt, activity_labels.txt).
-2. Clean (through splitting by spaces) and transform to numeric the feature sets provided by the files: X_train.txt and X_test.txt, excluding any possible NA's.
+1. Read all relevant data files into data frames ("X_test.txt", "Y_test.txt", "X_train.txt", "Y_train.txt", "subject_test.txt", "subject_train.txt", "activity_labels.txt").
+2. Clean (through splitting by spaces) and transform to numeric the feature sets provided by the files: "X_train.txt" and "X_test.txt", excluding any possible NA's.
 3. Creating new data frame with each feature-row substituted by its mean and standard deviation for both train and test feature sets.
-4. Adding proper activity labels corresponding to the activity numbers as read by the files: Y_train.txt and Y_test.txt.
+4. Adding proper activity labels corresponding to the activity numbers as read by the files: "Y_train.txt" and "Y_test.txt".
 5. Properly adding variable names to all data frames before merger.
 6. Merging activity codes, labels, subjects and mean and standard deviation of features through column-binding for both train and test data separately.
 7. Merging all train and test data through row-binding, followed by ordering by the activity code and subject ID for a tidier data.
