@@ -37,30 +37,15 @@ This function outputs the following files:
 | testActivity | Numeric data frame | 2947 x 1 | 1-6 | Holds data in Y_test.txt. A character variable with the equivalent activity is later added to it |
 | trainActivity | Numeric data frame | 7352 x 1 | 1-6 | Holds data in Y_train.txt. A character variable with the equivalent activity is later added to it |
 | activityLabels | Int & chr data frame | 6 x 2 | 1-6 | Holds data in activity_labels.txt |
+| Clean | Function | - | - | Splits a given row of testSet or trainSet, converts it to numeric while deleting possible NA's and outputs a 2 variable vector of its mean and standard deviation |
+| testDescrptr | Numeric data frame | 2947 x 2 | [-1,1] | Holds per row descriptors (mean and standard deviation) of the test feature sets |
+| trainDescrptr | Numeric data frame | 7352 x 2 | [-1,1] | Holds per row descriptors (mean and standard deviation) of the train feature sets |
+| testData | Multivariate data frame | 2947 x 5 | - | holds column-binded testActivity, testSubjects & testDescrptr with variables of {Activity_code, Activity_label, Subject_ID, Mean, Standard_deviation} |
+| trainData | Multivariate data frame | 7352 x 5 | - | holds column-binded trainActivity, trainSubjects & trainDescrptr with variables of {Activity_code, Activity_label, Subject_ID, Mean, Standard_deviation} |
+| mergedData | Multivariate data frame | 10299 x 5 | - | Holds row-binded and ordered trainData & testData |
+| meltData | Multivariate data frame | 20598 x 5 | - | holds melted mergedData over the measure variable: Mean and standard deviation |
+| summaryData | Multivariate data frame | 180 x 5 | - | holds data summary, in which average of mean and standard deviation are aggregated across distinct activity and subject pairs. Variables are {Activity_Code, Activity_Label, Subject_ID, AVG(Mean), AVG(Standard_Deviation)} |
 
-
-
-hjghgjhgj
-
-
-| Clean          | Function                |      -     |        -        | Splits a given row of testSet or trainSet, converts it to numeric and outputs a 2     |
-				                                          | variable vector of its mean and standard deviation                                    |
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| testDescptr    | Numeric data frame      |  2947 x 2  |      [-1,1]     | Holds per row descriptors (mean and standard deviation) of the test feature sets      |
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| trainDescptr   | Numeric data frame      |  7352 x 2  |      [-1,1]     | Holds per row descriptors (mean and standard deviation) of the train feature sets     |  
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| testData       | Multivariate data frame |  2947 x 5  |        -        | Holds column-binded testActivity, testSubjects & testDescptr with variables of        |                                                                                | {Activity_Code, Activity_Label, Subject_ID, Mean, Standard_Deviation}                 |
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| trainData      | Multivariate data frame |  7352 x 5  |        -        | Holds column-binded trainActivity, trainSubjects & trainDescptr with variables of     |                                                                                | {Activity_Code, Activity_Label, Subject_ID, Mean, Standard_Deviation}                 |      
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| mergedData     | Multivariate data frame |  10299 x 5 |        -        | Holds row-binded and ordered trainData & testData                                     | 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| meltData       | Multivariate data frame |  20598 x 5 |        -        | Holds melted mergedData over the measure variable: Mean & Standard_Deviation          |   
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| summaryData    | Multivariate data frame |  180 x 5   |        -        | Holds data summary, in which avergae of mean and standard deviation are aggregated    |                                                                                | across distinct activity and subject pairs. Variables are {Activity_Code,             | 
-                                                                          | Activity_Label, Subject_ID, AVG(Mean), AVG(Standard_Deviation)}                       |
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Implementation
 The code works to:
