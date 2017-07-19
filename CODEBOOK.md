@@ -27,7 +27,8 @@ This function outputs the following files:
 ### Formal Arguments
     None
 ### Local Variables/Functions
-|----------------|-------------------------|------------|-----------------|---------------------------------------------------------------------------------------|
+
+
 | Object Name    | Class                   | Dimension  | Range (Numeric) | Usage                                                                                 |
 |----------------|-------------------------|------------|-----------------|---------------------------------------------------------------------------------------|
 | testSet        | Character data frame    |  2947 x 1  |        -        | Holds data in X_test.txt                                                              |
